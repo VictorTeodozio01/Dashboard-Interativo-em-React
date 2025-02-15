@@ -1,16 +1,15 @@
-"use client"; 
+"use client";
 import { useState } from "react";
 import { DndContext, closestCorners } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
 import Card from "./Card";
+import { initialCarousel } from "./consts";
 
-const initialCarousel = [
-  { id: "A", size: "w-40 h-24" },
-  { id: "B", size: "w-40 h-24" },
-  { id: "C", size: "w-40 h-24" },
-];
+interface CarouselProps {
+  addCardToDashboard: (id: string) => void;
+}
 
-export default function Carousel() {
+export default function Carousel({ addCardToDashboard }: CarouselProps) {
   const [carouselItems, setCarouselItems] = useState(initialCarousel);
 
   const handleDragEnd = (event: any) => {
@@ -27,11 +26,13 @@ export default function Carousel() {
       <SortableContext items={carouselItems.map((item) => item.id)}>
         <div className="flex gap-4 p-4 overflow-x-auto">
           {carouselItems.map((item) => (
-            <Card 
-            key={item.id} 
-            id={item.id} 
-            size={item.size} 
-            />
+            <div
+              key={item.id}
+              onClick={() => addCardToDashboard(item.id)}
+              className="cursor-pointer"
+            >
+              <Card id={item.id} size={item.size} />
+            </div>
           ))}
         </div>
       </SortableContext>

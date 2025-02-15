@@ -1,4 +1,4 @@
-<img src="home.png" alt="" width="" height="250">
+<img src="home.gif" alt="" width="" height="300">
 
 # Dashboard Interativo com drag and Drop (Arrastar e soltar) em React com Next.js
 

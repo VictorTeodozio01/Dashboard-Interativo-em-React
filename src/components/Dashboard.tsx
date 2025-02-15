@@ -1,36 +1,35 @@
 "use client";
-import { useState } from "react";
-import { DndContext, closestCorners, DragEndEvent } from "@dnd-kit/core";
+
+import { DndContext, closestCorners } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
-import Card from "../components/Card";
-import AddRemoveButtons from "../components/AddRemoveButtons";
+import Card from "./Card";
 import DragAndDropToDelete from "./DragAndDropToDelete";
+import AddRemoveButtons from "./AddRemoveButtons";
 
-const initialCards = [
-  { id: "1", size: "w-64 h-40" },
-  { id: "2", size: "w-80 h-40" },
-  { id: "3", size: "w-64 h-56" },
-];
+interface DashboardProps {
+  cards: { id: string; size: string }[];
+  setCards: React.Dispatch<
+    React.SetStateAction<{ id: string; size: string }[]>
+  >;
+}
 
-export default function Dashboard() {
-  const [cards, setCards] = useState(initialCards);
-
+export default function Dashboard({ cards, setCards }: DashboardProps) {
   const removeCard = (id: string) => {
     setCards((prev) => prev.filter((card) => card.id !== id));
   };
 
-  const handleDragEnd = (event: DragEndEvent) => {
+  const handleDragEnd = (event: any) => {
     const { active, over } = event;
 
     if (!over) return;
 
-    const ativoId = String(active.id);
+    const activeId = String(active.id);
     const overId = String(over.id);
 
     if (overId === "delete-zone") {
-      removeCard(ativoId); 
+      removeCard(activeId);
     } else {
-      const oldIndex = cards.findIndex((card) => card.id === ativoId);
+      const oldIndex = cards.findIndex((card) => card.id === activeId);
       const newIndex = cards.findIndex((card) => card.id === overId);
       setCards(arrayMove(cards, oldIndex, newIndex));
     }
